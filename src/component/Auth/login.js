@@ -1,9 +1,11 @@
 import React from 'react';
 import SimpleReactValidator from 'simple-react-validator';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 // import Spinner from '../Spinner/Spinner';
+import { AuthUserContext } from '../session';
 import { withFirebase } from '../Firebase';
-import { Button, Container, Col, Row,  Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Container, Col, Row, Form, FormGroup, Label, Input } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Login extends React.Component{
 
@@ -11,7 +13,7 @@ class Login extends React.Component{
     super(props);
     this.validator = new SimpleReactValidator();
     this.state = {
-      InitRegisterUser: {
+      initLoginUser: {
         email: '',
         password: '',
         error: null
@@ -24,14 +26,15 @@ class Login extends React.Component{
     this.submitFormHandler = this.submitFormHandler.bind(this);
     this.userFormHandler = this.userFormHandler.bind(this);
   }
+
   userFormHandler(event) {
     const target = event.target;
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const { InitRegisterUser } = this.state;
+    const { initLoginUser } = this.state;
     this.setState({
-      InitRegisterUser: {
-        ...InitRegisterUser,
+      initLoginUser: {
+        ...initLoginUser,
         [name]: value
       }
     });
@@ -44,21 +47,21 @@ class Login extends React.Component{
     if (this.validator.allValid()) {
       this.setState({ loading: true });
 
-      const { email, password } = this.state.InitRegisterUser;
+      const { email, password } = this.state.initLoginUser;
       this.props.firebase.doSignInWithEmailAndPassword(email, password)
         .then(authUser => {
           console.log(authUser);
           this.setState({
-            ...this.state.InitRegisterUser,
+            ...this.state.initLoginUser,
             loading: false,
             modal: false
           });
-          this.props.history.push({ pathname: '/dashboard' });
+          this.props.history.push({ pathname: '/order' });
         })
         .catch(error => {
           this.setState({
-            ...this.state.InitRegisterUser,
-            InitRegisterUser: { error: error },
+            ...this.state.initLoginUser,
+            initLoginUser: { error: error },
             loading: false,
             modal: true
           });
@@ -80,23 +83,28 @@ class Login extends React.Component{
 
   componentWillUnmount() {
     this._isMounted = false;
+    <AuthUserContext.Consumer>
+                    {authUser =>
+                       authUser ? this.props.history.push({ pathname: '/order' }) : null
+                    }
+   </AuthUserContext.Consumer>
   }
 
   render() {
-    const { InitRegisterUser } = this.state;
+    const { initLoginUser } = this.state;
     let form = <Form onSubmit={this.submitFormHandler}>
-                <span style={{color:'red'}}>{InitRegisterUser.error && <p>{InitRegisterUser.error.message}</p>}</span>
+                <span style={{color:'red'}}>{initLoginUser.error && <p>Invalid login credentials</p>}</span>
                 <FormGroup>
                   <Label for="email">Email</Label>
-                  <Input name="email" type="text" value={InitRegisterUser.email}  onChange={this.userFormHandler} id="email" placeholder="Email" />
-                   <span style={{color:'red'}}>{this.validator.message('email', InitRegisterUser.email, 'required|email|regex')}</span>
+                  <Input name="email" type="text" value={initLoginUser.email}  onChange={this.userFormHandler} id="email" placeholder="name@email.com" />
+                   <span style={{color:'red'}}>{this.validator.message('email', initLoginUser.email, 'required|email|regex')}</span>
                 </FormGroup>
                 <FormGroup>
                   <Label for="Password">Password</Label>
-                  <Input type="password" name="password" value={InitRegisterUser.password} onChange={this.userFormHandler} id="Password" placeholder="Password" />
-                  <span style={{color:'red'}}>{this.validator.message('password', InitRegisterUser.password, 'required|min:7')}</span>
+                  <Input type="password" name="password" value={initLoginUser.password} onChange={this.userFormHandler} id="Password" placeholder="********" />
+                  <span style={{color:'red'}}>{this.validator.message('password', initLoginUser.password, 'required|min:7')}</span>
                 </FormGroup>
-                <Button color="primary">Sign in</Button>
+                <Button outline color="secondary">Sign in</Button>
             </Form>;
     if(this.state.loading){
       form = <p>Loading...</p>;
@@ -106,7 +114,7 @@ class Login extends React.Component{
          <Container>
          <Row>
           <Col sm="12" md={{ size: 6, offset: 3 }}>
-             <h4  style={{color:"#ef5635", marginTop: "20px"}}>Please Login!</h4>
+             <h4  style={{color:"#7DCEA0", marginTop: "100px", marginBottom: "100px", textAlign: 'center',}}>Please Login!</h4>
           </Col>
          </Row>
          <Row>
