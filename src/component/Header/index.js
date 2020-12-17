@@ -8,10 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
-
 import logo from '../../assets/images/logo.png';
 import SignOutButton from '../Auth/logout';
 import { AuthUserContext } from '../session';
@@ -43,16 +40,16 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 3,
+      marginLeft: theme.spacing(3),
       width: 'auto',
     },
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing(9),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -68,7 +65,7 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 10,
+    paddingLeft: theme.spacing(10),
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
@@ -133,13 +130,6 @@ class PrimaryHeader extends React.Component {
                     }
         </AuthUserContext.Consumer>
         </MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>
-        <AuthUserContext.Consumer>
-                    {authUser =>
-                      authUser ? <NavLink style={{color:"#d8caca"}} to='/reset_password'>Reset Pass</NavLink> : <NavLink style={{color:"#d8caca"}} to='/register'>Register</NavLink>
-                    }
-        </AuthUserContext.Consumer>
-        </MenuItem>
       </Menu>
     );
 
@@ -151,48 +141,39 @@ class PrimaryHeader extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMobileMenuClose}>
+        <MenuItem onClick={this.handleMobileMenuClose} style={{padding:"5px"}}>
           <AuthUserContext.Consumer>
               {authUser =>
-                authUser ?<NavLink style={{color:"#d8caca"}} to='/order'>Orders</NavLink> : null
+                authUser ?<NavLink style={{color:"#d8caca"}} to='/order'>Order</NavLink> : null
               }
           </AuthUserContext.Consumer>
-        </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
         </MenuItem>
       </Menu>
     );
 
     return (
-      <div style={{height: '60px', backgroundColor: '#D8D7D7',}} className={classes.root}>
-        <AppBar  style={{backgroundColor: '#D8D7D7', height: '60px', zIndex:"900"}} position="static">
+      <div style={{height: '60px', backgroundColor: '#FCFCFC',}} className={classes.root}>
+        <AppBar  style={{backgroundColor: '#FCFCFC', height: '60px', zIndex:"900"}} position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-             <img src={logo} height='57'  width='250' alt="Construyo logo" />
-            </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-            
-            </Typography>
+            <span className={classes.menuButton} color="inherit" aria-label="Open drawer">
+             <img src={logo} height='57'  width='250' alt="Construyo logo" name="Construyo logo" />
+            </span>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-               <MenuItem onClick={this.handleMobileMenuClose}>
+              <MenuItem onClick={this.handleMobileMenuClose} style={{ padding: "3px" }}>
                 <AuthUserContext.Consumer>
                     {authUser =>
-                      authUser ?<NavLink style={{color:"#d8caca"}} to='/orders'>Orders</NavLink> : null
+                      authUser ?<NavLink style={{color:"#000", textDecoration: "none", padding: '2px' }} to='/orders'>Orders</NavLink> : null
                     }
                 </AuthUserContext.Consumer>
               </MenuItem>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+              <MenuItem onClick={this.handleMobileMenuClose} style={{ padding: "3px" }}>
+                <AuthUserContext.Consumer>
+                            {authUser =>
+                              authUser ? <SignOutButton /> :  null
+                            }
+                </AuthUserContext.Consumer>
+              </MenuItem>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
