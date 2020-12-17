@@ -10,10 +10,10 @@ function App() {
   return (
     <div>
       <Layout>
-          <Switch>
-              <Route path='/' exact component={Login} />
-              <Route path='/order' exact component={Order} />
-              <Route component={ErrorPageContainer} />
+        <Switch>
+          <Route path='/order' exact component={Order} />
+          <Route path='/' exact component={Login} />
+          <Route component={ErrorPageContainer} />
           </Switch>
       </Layout>
     </div>
