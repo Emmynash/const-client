@@ -1,9 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { TableContainer, Table, TableBody, TableCell, TableRow, TableHead, Paper, Grid, Typography } from '@material-ui/core';
+import {
+  TableContainer,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableHead,
+  Paper,
+  Grid,
+  Typography
+} from '@material-ui/core';
 import axios from 'axios'
+import { compose } from 'recompose';
 import { orderEnpoint } from '../../utils';
+import { withAuthorization } from '../session';
+
 
 const styles = theme => ({
   root: {
@@ -61,16 +74,21 @@ class Orders extends React.Component{
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                  {data.map((data) => (
-                      <TableRow key={data.uid}>
-                        <TableCell component="th" scope="row">
-                          {data.title}
-                        </TableCell>
-                        <TableCell>{data.bookingDate}</TableCell>
-                        <TableCell>{data.address ? data.address.street : null}</TableCell>
-                        <TableCell>{data.customer ? data.customer.name : null}</TableCell>
-                      </TableRow>
-                    ))}
+                      {data.map((data) => {
+                        // convert unixTimestamp to human readable
+                        const milliseconds = data.bookingDate * 1000 
+                        const dateObject = new Date(milliseconds)
+                         const humanDateFormat = dateObject.toLocaleString().split(',')[0]
+                        return (
+                        <TableRow key={data.uid}>
+                          <TableCell component="th" scope="row">
+                            {data.title}
+                          </TableCell>
+                          <TableCell>{humanDateFormat}</TableCell>
+                          <TableCell>{data.address ? data.address.street : null}</TableCell>
+                          <TableCell>{data.customer ? data.customer.name : null}</TableCell>
+                        </TableRow>
+                      )})}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -83,5 +101,5 @@ class Orders extends React.Component{
 Orders.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
-export default (withStyles(styles)) (Orders);
+const condition = authUser => !!authUser;
+export default compose(withStyles(styles), withAuthorization(condition)) (Orders);
