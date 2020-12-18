@@ -163,7 +163,7 @@ class PrimaryHeader extends React.Component {
               <MenuItem onClick={this.handleMobileMenuClose} style={{ padding: "3px" }}>
                 <AuthUserContext.Consumer>
                     {authUser =>
-                      authUser ?<NavLink style={{color:"#000", textDecoration: "none", padding: '2px' }} to='/orders'>Orders</NavLink> : null
+                      authUser ?<NavLink style={{color:"#000", textDecoration: "none", padding: '2px' }} to='/order'>Orders</NavLink> : null
                     }
                 </AuthUserContext.Consumer>
               </MenuItem>
