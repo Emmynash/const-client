@@ -1,7 +1,34 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Clone the repository
 
+```
+git clone --depth=1 https://github.com/Emmynash/const-client.git
+```
+
+- Install dependencies
+
+```
+cd const-client
+npm install
+```
+
+- Run the project directly in TS
+
+````
+npm start
+```.
+## Environment variables
+
+Create a .env file (or just rename the .example.env) containing all the env variables you want to set, update path to your firebase config file. This project is using seven variables at the moment:
+
+REACT_APP_API_KEY=**********************************
+REACT_APP_AUTH_DOMAIN=*******************************
+REACT_APP_DATABASE_URL=********************************
+REACT_APP_PROJECT_ID=c*************************
+REACT_APP_STORAGE_BUCKET=*******************************
+REACT_APP_MESSAGING_SENDER_ID=****************
+REACT_APP_APP_ID=**
 ## Available Scripts
 
 In the project directory, you can run:
@@ -68,3 +95,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+````
