@@ -30,7 +30,7 @@ class Login extends React.Component{
   userFormHandler(event) {
     const target = event.target;
     const name = target.name;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value =  target.value;
     const { initLoginUser } = this.state;
     this.setState({
       initLoginUser: {
